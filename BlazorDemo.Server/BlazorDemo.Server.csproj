@@ -16,4 +16,9 @@
     <ProjectReference Include="..\BlazorDemo.Shared\BlazorDemo.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DataAccess\" />
+    <Folder Include="Views\" />
+  </ItemGroup>
+
 </Project>
