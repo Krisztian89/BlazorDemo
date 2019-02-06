@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,6 +37,16 @@ namespace BlazorDemo.Server.Controllers
             }
 
             return order;
+        }
+
+        [HttpPost]
+        [Route("api/order")]
+        public async Task<ActionResult<Order>> CreateNewOrder([FromBody] Order order)
+        {
+            if (ModelState.IsValid)
+                await repository.AddNewOrderAsync(order);
+
+            return CreatedAtAction(nameof(GetOrder), new { id = order.OrderId }, order);
         }
     }
 }
