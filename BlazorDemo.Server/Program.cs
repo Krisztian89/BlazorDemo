@@ -16,6 +16,7 @@ namespace BlazorDemo.Server
                 .UseConfiguration(new ConfigurationBuilder()
                     .AddCommandLine(args)
                     .Build())
+                .UseDefaultServiceProvider(options => options.ValidateScopes = false) // Needed to set because of migrations (and hostedservices)
                 .UseStartup<Startup>()
                 .Build();
     }
