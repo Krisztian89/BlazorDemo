@@ -1,7 +1,9 @@
+using BlazorDemo.Server.DataAccess;
 using Microsoft.AspNetCore.Blazor.Server;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
@@ -21,6 +23,13 @@ namespace BlazorDemo.Server
 
         public void ConfigureServices(IServiceCollection services)
         {
+            // Repository DI
+            services.AddDbContext<OrderContext>(options =>
+            {
+                options.UseSqlServer(Configuration["ConnectionStrings:LocalDbConnection"]);
+            });
+            services.AddTransient<IOrderRepository, EFOrderRepository>();
+
             services.AddMvc();
 
             services.AddResponseCompression(options =>
