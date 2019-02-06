@@ -11,7 +11,7 @@ namespace BlazorDemo.Server.DataAccess
         IQueryable<Order> Orders { get; }
         IQueryable<OrderItem> OrderItems { get; }
 
-        void AddNewOrder(Order order);
+        Task AddNewOrderAsync(Order order);
         void AddNewOrderItem(OrderItem orderItem);
     }
 }
