@@ -1,7 +1,10 @@
+using BlazorDemo.Server.DataAccess;
 using Microsoft.AspNetCore.Blazor.Server;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
 using System.Linq;
@@ -11,10 +14,22 @@ namespace BlazorDemo.Server
 {
     public class Startup
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+        public IConfiguration Configuration { get; set; }
+
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
+            // Repository DI
+            services.AddDbContext<OrderContext>(options =>
+            {
+                options.UseSqlServer(Configuration["ConnectionStrings:LocalDbConnection"]);
+            });
+            services.AddTransient<IOrderRepository, EFOrderRepository>();
+
             services.AddMvc();
 
             services.AddResponseCompression(options =>
@@ -27,7 +42,6 @@ namespace BlazorDemo.Server
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseResponseCompression();
