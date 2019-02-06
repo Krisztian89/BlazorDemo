@@ -30,7 +30,11 @@ namespace BlazorDemo.Server
             });
             services.AddTransient<IOrderRepository, EFOrderRepository>();
 
-            services.AddMvc();
+            services.AddMvc()
+                .AddJsonOptions(options => {
+                    options.SerializerSettings.ReferenceLoopHandling =
+                        Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                });
 
             services.AddResponseCompression(options =>
             {
