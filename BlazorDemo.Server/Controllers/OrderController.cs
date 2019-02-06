@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,6 +24,19 @@ namespace BlazorDemo.Server.Controllers
         {
             var result = await repository.Orders.ToListAsync();
             return result;
+        }
+
+        [HttpGet("api/orders/{id}")]
+        public async Task<ActionResult<Order>> GetOrder(int id)
+        {
+            var order = await repository.Orders.FirstOrDefaultAsync(o => o.OrderId == id);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            return order;
         }
     }
 }
