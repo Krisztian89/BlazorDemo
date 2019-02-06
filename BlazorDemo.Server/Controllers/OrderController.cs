@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BlazorDemo.Server.DataAccess;
 using BlazorDemo.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlazorDemo.Server.Controllers
 {
@@ -19,9 +20,9 @@ namespace BlazorDemo.Server.Controllers
 
         [HttpGet]
         [Route("api/orders/")]
-        public IEnumerable<Order> GetOrders()
+        public async Task<IEnumerable<Order>> GetOrders()
         {
-            var result = repository.Orders.ToList();
+            var result = await repository.Orders.ToListAsync();
             return result;
         }
     }
