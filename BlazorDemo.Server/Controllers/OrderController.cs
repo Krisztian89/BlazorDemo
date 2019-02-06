@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,7 +20,7 @@ namespace BlazorDemo.Server.Controllers
 
         [HttpGet]
         [Route("api/orders/")]
-        public async Task<IEnumerable<Order>> GetOrders()
+        public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {
             var result = await repository.Orders.ToListAsync();
             return result;
