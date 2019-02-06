@@ -21,10 +21,10 @@ namespace BlazorDemo.Server.DataAccess
 
         public IQueryable<OrderItem> OrderItems => context.OrderItems;
 
-        public void AddNewOrder(Order order)
+        public async Task AddNewOrderAsync(Order order)
         {
             context.Orders.Add(order);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
         public void AddNewOrderItem(OrderItem orderItem)
