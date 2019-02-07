@@ -3,8 +3,7 @@
 @inject HttpClient Http
 @inject Microsoft.AspNetCore.Blazor.Services.IUriHelper UriHelper
 
-<h1>Create</h1>
-<h3>Order</h3>
+<h1>Create Order</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -13,11 +12,33 @@
                 <label for="@nameof(Order.Name)" class="control-label">@nameof(Order.Name)</label>
                 <input for="@nameof(Order.Name)" class="form-control" bind="@order.Name" />
             </div>
+            <div class="form-group">
+                <label for="@nameof(Order.Comment)" class="control-label">@nameof(Order.Comment)</label>
+                <textarea for="@nameof(Order.Comment)" class="form-control" rows="3" bind="@order.Comment"></textarea>
+            </div>
+
+            @*New order item*@
+            <div class="form-group">
+                <label for="@nameof(OrderItem.ProductName)" class="control-label">@nameof(OrderItem.ProductName)</label>
+                <input for="@nameof(OrderItem.ProductName)" class="form-control" bind="@tmpOrderItem.ProductName" />
+            </div>
+            <div class="form-group">
+                <label for="@nameof(OrderItem.Quantity)" class="control-label">@nameof(OrderItem.Quantity)</label>
+                <input for="@nameof(OrderItem.Quantity)" class="form-control" bind="@tmpOrderItem.Quantity" />
+            </div>
+            <div class="form-group">
+                <label for="@nameof(OrderItem.Comment)" class="control-label">@nameof(OrderItem.Comment)</label>
+                <textarea for="@nameof(OrderItem.Comment)" class="form-control" rows="3" bind="@tmpOrderItem.Comment"></textarea>
+            </div>
+
+            <div class="form-group">
+                <button type="button" class="btn btn-default" onclick="@AddOrderItem">Add item</button>
+            </div>
 
 
             <div class="form-group">
-                <button type="submit" class="btn btn-default">Save</button>
-                <button class="btn" onclick="@cancel">Cancel</button>
+                <button type="submit" class="btn btn-default" onclick="@(async () => await CreateNewOrder())">Save</button>
+                <button class="btn" onclick="@Cancel">Cancel</button>
             </div>
         </form>
     </div>
@@ -27,11 +48,20 @@
     Order order = new Order { OrderItems = new List<OrderItem>() };
     OrderItem tmpOrderItem = new OrderItem();
 
-
-    
-
-    void cancel()
+    protected void Cancel()
     {
         UriHelper.NavigateTo("/orders");
+    }
+
+    protected async Task CreateNewOrder()
+    {
+        await Http.SendJsonAsync(HttpMethod.Post, "/api/order", order);
+        UriHelper.NavigateTo("/orders");
+    }
+
+    protected void AddOrderItem()
+    {
+        order.OrderItems.Add(tmpOrderItem);
+        tmpOrderItem = new OrderItem();
     }
 }
