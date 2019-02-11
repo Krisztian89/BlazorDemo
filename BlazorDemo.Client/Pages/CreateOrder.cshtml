@@ -1,4 +1,4 @@
-﻿@using BlazorDemo.Shared.Models
+@using BlazorDemo.Shared.Models
 @page "/createOrder"
 @inject HttpClient Http
 @inject Microsoft.AspNetCore.Blazor.Services.IUriHelper UriHelper
@@ -45,7 +45,7 @@
                 <ul>
                     @foreach (var item in order.OrderItems)
                     {
-                        <li>@item.ProductName - @item.Quantity pcs</li>
+                        <li>@item.ProductName - @item.Quantity pcs - @item.Comment</li>
                     }
                 </ul>
             }
