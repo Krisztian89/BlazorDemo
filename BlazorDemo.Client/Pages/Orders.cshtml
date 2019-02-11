@@ -1,0 +1,33 @@
+﻿@page "/orders"
+@using BlazorDemo.Shared.Models
+@inject HttpClient Http
+
+<h1>Orders</h1>
+
+<p>
+    <a class="btn btn-primary" href="/createOrder">Create New Order</a>
+</p>
+
+@if (orders == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <ul>
+        @foreach (var order in orders)
+        {
+            <li>@order.Name</li>
+        }
+    </ul>
+}
+
+
+@functions{
+    List<Order> orders;
+    protected override async Task OnInitAsync()
+    {
+        orders = await Http.GetJsonAsync<List<Order>>
+            ("/api/order");
+    }
+}
